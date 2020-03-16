@@ -1,6 +1,3 @@
-var PopupModel = /** @class */ (function () {
-    function PopupModel() {
-    }
-    return PopupModel;
-}());
+class PopupModel {
+}
 //# sourceMappingURL=popup-model.js.map
