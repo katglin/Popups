@@ -189,6 +189,11 @@
   </ItemGroup>
   <ItemGroup>
     <TypeScriptCompile Include="Scripts\typings\jquery\jquery.d.ts" />
+    <TypeScriptCompile Include="tsScripts\Models\action-execute-type.ts" />
+    <TypeScriptCompile Include="tsScripts\Models\popup-model.ts" />
+    <TypeScriptCompile Include="tsScripts\Models\action-type.ts" />
+    <TypeScriptCompile Include="tsScripts\Models\popup-color.ts" />
+    <TypeScriptCompile Include="tsScripts\Models\popup-type.ts" />
     <TypeScriptCompile Include="tsScripts\init-data.ts" />
   </ItemGroup>
   <ItemGroup>

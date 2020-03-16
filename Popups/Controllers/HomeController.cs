@@ -112,7 +112,7 @@ namespace Popups.Controllers
                 new List<PopupModel>(){ DenialCase_Model_1, DenialCase_Model_2, DenialCase_Model_3, DenialCase_Model_4 },
                 new List<PopupModel>(){ DenialErrorCase_Model_1, DenialErrorCase_Model_2, DenialErrorCase_Model_3, DenialErrorCase_Model_4 }
             };
-            return Json(result);
+            return Json(result, JsonRequestBehavior.AllowGet);
         }
 
         public ActionResult Index()
