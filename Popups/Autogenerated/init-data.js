@@ -20,8 +20,7 @@ window.onload = () => {
 };
 function processMessages(data) {
     (() => __awaiter(this, void 0, void 0, function* () {
-        const initialTimestamp = new Date();
-        const processes = [1, 2];
+        const processes = [1, 2, 3, 4];
         yield Promise.all(processes.map((process) => __awaiter(this, void 0, void 0, function* () {
             run(process);
         })));
@@ -29,67 +28,43 @@ function processMessages(data) {
 }
 function run(process) {
     return __awaiter(this, void 0, void 0, function* () {
-        $("#dialog" + process).dialog("open");
+        createContainer(process);
+        createDialog(process, "Test " + process);
+        $('#dialog' + process).dialog("open");
     });
 }
-$("#dialog1").dialog({
-    classes: {
-        "ui-dialog": "highlight"
-    },
-    position: [10, 10],
-    autoOpen: false,
-    modal: true,
-    title: "View Details 1",
-    buttons: [
-        {
-            text: "OK",
-            click: function () {
-                $(this).dialog("close");
-            }
-        }
-    ]
-});
-$("#dialog2").dialog({
-    classes: {
-        "ui-dialog": "highlight"
-    },
-    position: [50, 50],
-    autoOpen: false,
-    modal: true,
-    title: "View Details 2",
-    buttons: [
-        {
-            text: "OK",
-            click: function () {
-                $(this).dialog("close");
-            }
+function createContainer(id) {
+    $('#dialogContainer').append('<div class="dialog-container" id = "dialog-container-' + id + '"></div>');
+}
+function createDialog(id, message) {
+    $("<div class='dialog' id='dialog" + id + "'</div>")
+        .dialog({
+        position: {
+            of: $('#dialog-container-' + id)
         },
-        {
-            text: "Cancel",
-            click: function () {
-                $(this).dialog("close");
+        autoOpen: false,
+        resizable: false,
+        draggable: false,
+        height: 140,
+        modal: true,
+        title: message,
+        buttons: [
+            {
+                text: "OK",
+                click: function () {
+                    console.log(id);
+                    $(this).dialog('destroy').remove();
+                    createDialog(id, "Another message for" + id);
+                    $('#dialog' + id).dialog("open");
+                }
+            },
+            {
+                text: "Cancel",
+                click: function () {
+                    $(this).dialog("close");
+                }
             }
-        }
-    ]
-});
-//$.confirm({
-//    title: 'Confirm!',
-//    content: 'Simple confirm!',
-//    buttons: {
-//        confirm: function () {
-//            $.alert('Confirmed!');
-//        },
-//        cancel: function () {
-//            $.alert('Canceled!');
-//        },
-//        somethingElse: {
-//            text: 'Something else',
-//            btnClass: 'btn-blue',
-//            keys: ['enter', 'shift'],
-//            action: function () {
-//                $.alert('Something else?');
-//            }
-//        }
-//    }
-//});
+        ]
+    });
+}
 //# sourceMappingURL=init-data.js.map

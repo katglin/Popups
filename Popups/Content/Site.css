@@ -22,3 +22,29 @@ select,
 textarea {
     max-width: 280px;
 }
+
+.container {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+}
+
+#dialogContainer {
+    width: 100%;
+    height: 100%;
+}
+
+.ui-dialog {
+    position: absolute;
+    display: inline-block;
+    z-index: 200 !important;
+}
+
+.dialog-container {
+    display: inline-block;
+    margin-top: 100px;
+    margin-right: 50px;
+    width: 300px;
+    padding-top: 100px;
+}
