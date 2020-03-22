@@ -1,0 +1,3 @@
+﻿interface IButtonModel {
+    clone();
+}

@@ -1,0 +1,1 @@
+{"version":3,"file":"ButtonModel.js","sourceRoot":"","sources":["../../tsScripts/Models/ButtonModel.ts"],"names":[],"mappings":"AAAA,MAAM,WAAW;IAKb,YAAY,IAAY,EAAE,MAAgB;QACtC,IAAI,CAAC,IAAI,GAAG,IAAI,CAAC;QACjB,IAAI,CAAC,MAAM,GAAG,MAAM,CAAC;IACzB,CAAC;IAED,KAAK;QACD,OAAO,IAAI,WAAW,CAAC,IAAI,CAAC,IAAI,EAAE,IAAI,CAAC,MAAM,CAAC,CAAC;IACnD,CAAC;CACJ"}

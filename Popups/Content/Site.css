@@ -48,3 +48,23 @@ textarea {
     width: 300px;
     padding-top: 100px;
 }
+
+.Red {
+    background: red;
+}
+
+.Blue {
+    background: blue;
+}
+
+.Orange {
+    background: orange;
+}
+
+.Green {
+    background: green;
+}
+
+.Default {
+    background: gray;
+}

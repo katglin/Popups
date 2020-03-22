@@ -1,27 +1,55 @@
 ﻿/// <reference path=  "../node_modules/@types/jqueryui/index.d.ts" />
 
+var buttons; //: ButtonRegistry = new ButtonRegistry();
+
 window.onload = () => {
     $.ajax({
         url: "/Home/InitCollections",
         type: "get",
         data: null,
         async: false
-    }).done(function (data: PopupModel[][]) {
+        }).done(function (data: PopupModel[][]) {
+
+        prepareButtonRegistry();
         processMessages(data);
     });
 }
 
+function prepareButtonRegistry() {
+    buttons = new ButtonRegistry();
+    buttons.addButton(new ButtonModel("OK", openNext));
+    buttons.addButton(new ButtonModel("YES", executeActionAndClose));
+    buttons.addButton(new ButtonModel("NO", openNext));
+}
+
+function executeActionAndClose(index: number, popup: PopupModel) {
+    if (popup === undefined) return;
+    if (popup && popup.AEType) {
+        console.log(ActionExecuteType[popup.AEType]);
+    }
+    $('#dialog' + index).dialog("close");
+}
+
+function openNext(index: number, popup: PopupModel) {
+    if (popup === undefined) return;
+    if (popup) {
+        createDialog(index, popup);
+        addColor(index.toString(), PopupColor[popup.Color]);
+        $('#dialog' + index).dialog("open");
+    }
+    else {
+        $('#dialog' + index).dialog("close");
+    }
+}
+
 function processMessages(data: PopupModel[][]) {
     (async () => {
-
-
-
         await Promise.all(
             data.map((chain, index) => {
                 chain.forEach((popup, i) => {
-                    AddNext(popup, chain[i+1] ? chain[i+1] : null);
+                    AddNext(popup, chain[i+1] ? chain[i+1] : null); // use order number
                 });
-                run(chain, index);
+                StartChain(chain, index);
             })
         );
     })();
@@ -31,10 +59,13 @@ function AddNext(model: PopupModel, next: PopupModel) {
     model.NextPU = next;
 }
 
-async function run(chain: PopupModel[], index: number) {
+async function StartChain(chain: PopupModel[], index: number) {
     createContainer(index.toString());
-    createDialog(index, chain[0]); // use Order number
-    $('#dialog' + index).dialog("open");
+    openNext(index, chain[0]);
+}
+
+function addColor(id: string, color: string) {
+    $('.ui-dialog:has(#dialog'+id+') .ui-widget-header').addClass(color);
 }
 
 function createContainer(id: string) {
@@ -42,19 +73,29 @@ function createContainer(id: string) {
 }
 
 function GetButtons(id: number, model: PopupModel) {
-    return [
-        {text: "YES", click: breakChain},
-        {text: "NO", click: model.NextPU ? 
-        function() {
-            $(this).dialog('destroy').remove()
-            createDialog(id, model.NextPU);
-            $('#dialog' + id).dialog("open");
-    } : breakChain}
-    ];        
-}
+    var btns = [];
+    switch (model.Type) {
+        case PopupType.Info:case PopupType.Warning:
+            btns.push(buttons.getButton("OK"));
+            break;
+        case PopupType.Error:case PopupType.Denial:
+            btns.push(buttons.getButton("YES"));
+            btns.push(buttons.getButton("NO"));
+            break;
+        case PopupType.Confirmation:
+            btns.push(buttons.getButton("YES"));
+            break;
+    }
 
-function breakChain() {  // do action + break chain
-    $(this).dialog("close");
+    btns.forEach((btn, i)=>{
+        btn.click = function () {
+            var popup = btns[i].action == openNext ? model.NextPU : model;
+            $('#dialog' + id).dialog('destroy').remove();
+            btns[i].action(id, popup);
+            //action(id, model.NextPU);
+        }
+    });
+    return btns;      
 }
 
 function createDialog(id: number, popup: PopupModel) {
