@@ -1,0 +1,65 @@
+class PopupBuilder {
+    reset(index) {
+        $('#dialog' + index).dialog('destroy').remove();
+    }
+    addContainer(index) {
+        if ($('#dialog-container-' + index).length == 0) {
+            $('#dialogContainer').append('<div class="dialog-container" id = "dialog-container-' + index + '"></div>');
+        }
+    }
+    addColor(index, color) {
+        $('.ui-dialog:has(#dialog' + index + ') .ui-widget-header').addClass(color);
+    }
+    prepareButtonRegistry() {
+        this.buttonsReg = new ButtonRegistry();
+        this.buttonsReg.addButton(new ButtonModel("OK", openNext));
+        this.buttonsReg.addButton(new ButtonModel("YES", executeActionAndClose));
+        this.buttonsReg.addButton(new ButtonModel("NO", openNext));
+    }
+    addButtons(index, model) {
+        var btns = [];
+        switch (model.Type) {
+            case PopupType.Info:
+            case PopupType.Warning:
+                btns.push(this.buttonsReg.getButton("OK"));
+                break;
+            case PopupType.Error:
+            case PopupType.Denial:
+                btns.push(this.buttonsReg.getButton("YES"));
+                btns.push(this.buttonsReg.getButton("NO"));
+                break;
+            case PopupType.Confirmation:
+                btns.push(this.buttonsReg.getButton("YES"));
+                break;
+        }
+        btns.forEach((btn, i) => {
+            btn.click = function () {
+                $('#dialog' + index).dialog('destroy').remove();
+                btns[i].action(index, model);
+            };
+        });
+        return btns;
+    }
+    createPopup(index, popup) {
+        return $("<div class='dialog' id='dialog" + index + "'</div>")
+            .dialog({
+            position: {
+                of: $('#dialog-container-' + index)
+            },
+            autoOpen: false,
+            resizable: false,
+            draggable: false,
+            height: 140,
+            modal: true,
+            title: popup.Message,
+            buttons: this.addButtons(index, popup)
+        });
+    }
+    openPopup(index) {
+        $('#dialog' + index).dialog("open");
+    }
+    closePopup(index) {
+        $('#dialog' + index).dialog("close");
+    }
+}
+//# sourceMappingURL=PopupBuilder.js.map
