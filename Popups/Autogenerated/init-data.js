@@ -20,23 +20,42 @@ window.onload = () => {
 };
 function processMessages(data) {
     (() => __awaiter(this, void 0, void 0, function* () {
-        const processes = [1, 2, 3, 4];
-        yield Promise.all(processes.map((process) => __awaiter(this, void 0, void 0, function* () {
-            run(process);
-        })));
+        yield Promise.all(data.map((chain, index) => {
+            chain.forEach((popup, i) => {
+                AddNext(popup, chain[i + 1] ? chain[i + 1] : null);
+            });
+            run(chain, index);
+        }));
     }))();
 }
-function run(process) {
+function AddNext(model, next) {
+    model.NextPU = next;
+}
+function run(chain, index) {
     return __awaiter(this, void 0, void 0, function* () {
-        createContainer(process);
-        createDialog(process, "Test " + process);
-        $('#dialog' + process).dialog("open");
+        createContainer(index.toString());
+        createDialog(index, chain[0]); // use Order number
+        $('#dialog' + index).dialog("open");
     });
 }
 function createContainer(id) {
     $('#dialogContainer').append('<div class="dialog-container" id = "dialog-container-' + id + '"></div>');
 }
-function createDialog(id, message) {
+function GetButtons(id, model) {
+    return [
+        { text: "YES", click: breakChain },
+        { text: "NO", click: model.NextPU ?
+                function () {
+                    $(this).dialog('destroy').remove();
+                    createDialog(id, model.NextPU);
+                    $('#dialog' + id).dialog("open");
+                } : breakChain }
+    ];
+}
+function breakChain() {
+    $(this).dialog("close");
+}
+function createDialog(id, popup) {
     $("<div class='dialog' id='dialog" + id + "'</div>")
         .dialog({
         position: {
@@ -47,24 +66,8 @@ function createDialog(id, message) {
         draggable: false,
         height: 140,
         modal: true,
-        title: message,
-        buttons: [
-            {
-                text: "OK",
-                click: function () {
-                    console.log(id);
-                    $(this).dialog('destroy').remove();
-                    createDialog(id, "Another message for" + id);
-                    $('#dialog' + id).dialog("open");
-                }
-            },
-            {
-                text: "Cancel",
-                click: function () {
-                    $(this).dialog("close");
-                }
-            }
-        ]
+        title: popup.Message,
+        buttons: GetButtons(id, popup)
     });
 }
 //# sourceMappingURL=init-data.js.map

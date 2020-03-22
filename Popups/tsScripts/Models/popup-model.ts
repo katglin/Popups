@@ -1,4 +1,6 @@
-﻿class PopupModel {
+﻿/// <reference path=  "../../node_modules/@types/jqueryui/index.d.ts" />
+
+class PopupModel {
     /// <summary>
     /// Contains popup message
     /// </summary>
@@ -28,4 +30,8 @@
     /// Contains execution type for action
     /// </summary>
     AEType: ActionExecuteType;
+
+    // Buttons: object[]; // DialogButtonOptions
+
+    NextPU: PopupModel;
 }
