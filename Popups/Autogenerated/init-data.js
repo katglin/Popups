@@ -8,7 +8,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-var buttons; //: ButtonRegistry = new ButtonRegistry();
+var buttons;
 window.onload = () => {
     $.ajax({
         url: "/Home/InitCollections",
@@ -34,17 +34,29 @@ function executeActionAndClose(index, popup) {
     }
     $('#dialog' + index).dialog("close");
 }
-function openNext(index, popup) {
+function openNext(index, popup, init = false) {
     if (popup === undefined)
         return;
+    if (!init && popup)
+        popup = popup.NextPU;
     if (popup) {
+        $('#dialog' + index).dialog('destroy').remove();
         createDialog(index, popup);
         addColor(index.toString(), PopupColor[popup.Color]);
         $('#dialog' + index).dialog("open");
+        if (popup.Type == PopupType.Default || popup.AType == ActionType.Default) {
+            if (popup.AType == ActionType.Execute) {
+                console.log(ActionExecuteType[popup.AEType]);
+            }
+            setTimeout(openNext, 5000, index, popup);
+        }
     }
     else {
-        $('#dialog' + index).dialog("close");
+        closePopup(index);
     }
+}
+function closePopup(index) {
+    $('#dialog' + index).dialog("close");
 }
 function processMessages(data) {
     (() => __awaiter(this, void 0, void 0, function* () {
@@ -62,7 +74,7 @@ function AddNext(model, next) {
 function StartChain(chain, index) {
     return __awaiter(this, void 0, void 0, function* () {
         createContainer(index.toString());
-        openNext(index, chain[0]);
+        openNext(index, chain[0], true);
     });
 }
 function addColor(id, color) {
@@ -89,10 +101,8 @@ function GetButtons(id, model) {
     }
     btns.forEach((btn, i) => {
         btn.click = function () {
-            var popup = btns[i].action == openNext ? model.NextPU : model;
             $('#dialog' + id).dialog('destroy').remove();
-            btns[i].action(id, popup);
-            //action(id, model.NextPU);
+            btns[i].action(id, model);
         };
     });
     return btns;

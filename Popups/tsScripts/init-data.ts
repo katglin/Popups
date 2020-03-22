@@ -1,6 +1,6 @@
 ﻿/// <reference path=  "../node_modules/@types/jqueryui/index.d.ts" />
 
-var buttons; //: ButtonRegistry = new ButtonRegistry();
+var buttons;
 
 window.onload = () => {
     $.ajax({
@@ -30,16 +30,28 @@ function executeActionAndClose(index: number, popup: PopupModel) {
     $('#dialog' + index).dialog("close");
 }
 
-function openNext(index: number, popup: PopupModel) {
+function openNext(index: number, popup: PopupModel, init = false) {
     if (popup === undefined) return;
+    if (!init && popup) popup = popup.NextPU;
     if (popup) {
+        $('#dialog' + index).dialog('destroy').remove();
         createDialog(index, popup);
         addColor(index.toString(), PopupColor[popup.Color]);
         $('#dialog' + index).dialog("open");
+        if (popup.Type == PopupType.Default || popup.AType == ActionType.Default) {
+            if (popup.AType == ActionType.Execute) {
+                console.log(ActionExecuteType[popup.AEType]);
+            }
+            setTimeout(openNext, 5000, index, popup);
+        }
     }
     else {
-        $('#dialog' + index).dialog("close");
+        closePopup(index);
     }
+}
+
+function closePopup(index: number) {
+    $('#dialog' + index).dialog("close");
 }
 
 function processMessages(data: PopupModel[][]) {
@@ -61,7 +73,7 @@ function AddNext(model: PopupModel, next: PopupModel) {
 
 async function StartChain(chain: PopupModel[], index: number) {
     createContainer(index.toString());
-    openNext(index, chain[0]);
+    openNext(index, chain[0], true);
 }
 
 function addColor(id: string, color: string) {
@@ -87,12 +99,10 @@ function GetButtons(id: number, model: PopupModel) {
             break;
     }
 
-    btns.forEach((btn, i)=>{
+    btns.forEach((btn, i)=> {
         btn.click = function () {
-            var popup = btns[i].action == openNext ? model.NextPU : model;
             $('#dialog' + id).dialog('destroy').remove();
-            btns[i].action(id, popup);
-            //action(id, model.NextPU);
+            btns[i].action(id, model);
         }
     });
     return btns;      
