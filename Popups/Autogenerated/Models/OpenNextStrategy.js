@@ -8,6 +8,7 @@ class OpenNextStrategy extends BaseStrategy {
             clearTimeout(this.delayed[index]);
         if (popup) {
             this.puManager.makePopup(index, popup);
+            // auto close, execute action if any, and show next if any
             if (popup.Type == PopupType.Default || popup.AType == ActionType.Default) {
                 if (popup.AType == ActionType.Execute) {
                     this.performAction(popup.AEType);
