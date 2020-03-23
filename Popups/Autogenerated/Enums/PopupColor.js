@@ -6,4 +6,4 @@ var PopupColor;
     PopupColor[PopupColor["Red"] = 3] = "Red";
     PopupColor[PopupColor["Green"] = 4] = "Green";
 })(PopupColor || (PopupColor = {}));
-//# sourceMappingURL=popup-color.js.map
+//# sourceMappingURL=PopupColor.js.map

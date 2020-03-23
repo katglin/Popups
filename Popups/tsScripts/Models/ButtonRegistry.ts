@@ -6,7 +6,7 @@
     }
 
     addButton(button: ButtonModel) {
-        this.buttons.push(new ButtonModel(button.text, button.action));
+        this.buttons.push(new ButtonModel(button.text, button.strategy));
     }
 
     getButton(text: string): ButtonModel {

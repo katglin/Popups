@@ -3,7 +3,7 @@ class ButtonRegistry {
         this.buttons = [];
     }
     addButton(button) {
-        this.buttons.push(new ButtonModel(button.text, button.action));
+        this.buttons.push(new ButtonModel(button.text, button.strategy));
     }
     getButton(text) {
         return this.buttons.find(b => b.text == text).clone();

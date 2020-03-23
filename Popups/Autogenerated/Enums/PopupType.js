@@ -7,4 +7,4 @@ var PopupType;
     PopupType[PopupType["Denial"] = 4] = "Denial";
     PopupType[PopupType["Confirmation"] = 5] = "Confirmation";
 })(PopupType || (PopupType = {}));
-//# sourceMappingURL=popup-type.js.map
+//# sourceMappingURL=PopupType.js.map

@@ -8,7 +8,6 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-var puBuilder;
 window.onload = () => {
     $.ajax({
         url: "/Home/InitCollections",
@@ -22,46 +21,12 @@ window.onload = () => {
 function processMessages(data) {
     (() => __awaiter(this, void 0, void 0, function* () {
         yield Promise.all(data.map((chain, index) => {
-            chain.forEach((popup, i) => {
-                AddNext(popup, chain[i + 1] ? chain[i + 1] : null); // use order number
-            });
-            openNext(index, chain[0], true);
+            for (let i = 0; i < chain.length; i++) {
+                var next = chain.find(x => x.Order == chain[i].Order + 1);
+                chain[i].NextPU = next;
+            }
+            (new OpenNextStrategy()).act(index, chain[0], true);
         }));
     }))();
-}
-function AddNext(model, next) {
-    model.NextPU = next;
-}
-function executeActionAndClose(index, popup) {
-    if (popup === undefined)
-        return;
-    if (popup && popup.AEType) {
-        console.log(ActionExecuteType[popup.AEType]);
-    }
-    $('#dialog' + index).dialog("close");
-}
-function openNext(index, popup, init = false) {
-    if (popup === undefined)
-        return;
-    if (!init && popup)
-        popup = popup.NextPU;
-    if (popup) {
-        puBuilder = new PopupBuilder();
-        puBuilder.reset(index);
-        puBuilder.addContainer(index);
-        puBuilder.prepareButtonRegistry();
-        puBuilder.createPopup(index, popup);
-        puBuilder.addColor(index, PopupColor[popup.Color]);
-        puBuilder.openPopup(index);
-        if (popup.Type == PopupType.Default || popup.AType == ActionType.Default) {
-            if (popup.AType == ActionType.Execute) {
-                console.log(ActionExecuteType[popup.AEType]);
-            }
-            setTimeout(openNext, 5000, index, popup);
-        }
-    }
-    else {
-        puBuilder.closePopup(index);
-    }
 }
 //# sourceMappingURL=init-data.js.map

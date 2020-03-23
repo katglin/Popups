@@ -12,9 +12,9 @@ class PopupBuilder {
     }
     prepareButtonRegistry() {
         this.buttonsReg = new ButtonRegistry();
-        this.buttonsReg.addButton(new ButtonModel("OK", openNext));
-        this.buttonsReg.addButton(new ButtonModel("YES", executeActionAndClose));
-        this.buttonsReg.addButton(new ButtonModel("NO", openNext));
+        this.buttonsReg.addButton(new ButtonModel("OK", new OpenNextStrategy()));
+        this.buttonsReg.addButton(new ButtonModel("YES", new ActAndCloseStrategy()));
+        this.buttonsReg.addButton(new ButtonModel("NO", new OpenNextStrategy()));
     }
     addButtons(index, model) {
         var btns = [];
@@ -35,7 +35,7 @@ class PopupBuilder {
         btns.forEach((btn, i) => {
             btn.click = function () {
                 $('#dialog' + index).dialog('destroy').remove();
-                btns[i].action(index, model);
+                btns[i].strategy.act(index, model);
             };
         });
         return btns;

@@ -6,21 +6,21 @@
         $('#dialog' + index).dialog('destroy').remove();
     }
 
-    addContainer(index: string) {
+    addContainer(index: number) {
         if ($('#dialog-container-'+ index).length == 0) {
             $('#dialogContainer').append('<div class="dialog-container" id = "dialog-container-'+ index + '"></div>');
         }
     }
 
-    addColor(index: string, color: string) {
+    addColor(index: number, color: string) {
         $('.ui-dialog:has(#dialog'+index+') .ui-widget-header').addClass(color);
     }
 
     prepareButtonRegistry() {
         this.buttonsReg = new ButtonRegistry();
-        this.buttonsReg.addButton(new ButtonModel("OK", openNext));
-        this.buttonsReg.addButton(new ButtonModel("YES", executeActionAndClose));
-        this.buttonsReg.addButton(new ButtonModel("NO", openNext));
+        this.buttonsReg.addButton(new ButtonModel("OK", new OpenNextStrategy()));
+        this.buttonsReg.addButton(new ButtonModel("YES", new ActAndCloseStrategy()));
+        this.buttonsReg.addButton(new ButtonModel("NO", new OpenNextStrategy()));
     }
 
     addButtons(index: number, model: PopupModel) {
@@ -41,7 +41,7 @@
         btns.forEach((btn, i)=> {
             btn.click = function () {
                 $('#dialog' + index).dialog('destroy').remove();
-                btns[i].action(index, model);
+                btns[i].strategy.act(index, model);
             }
         });
         return btns; 

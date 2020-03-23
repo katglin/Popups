@@ -1,14 +1,14 @@
 ﻿class ButtonModel implements IButtonModel {
     text: string;
-    action: Function;
+    strategy: IClickAction;
     click: Function;
 
-    constructor(text: string, action: Function) {
+    constructor(text: string, strategy: IClickAction) {
         this.text = text;
-        this.action = action;
+        this.strategy = strategy;
     }
 
     clone(): ButtonModel {
-        return new ButtonModel(this.text, this.action);
+        return new ButtonModel(this.text, this.strategy);
     }
 }

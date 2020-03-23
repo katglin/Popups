@@ -1,10 +1,10 @@
 class ButtonModel {
-    constructor(text, action) {
+    constructor(text, strategy) {
         this.text = text;
-        this.action = action;
+        this.strategy = strategy;
     }
     clone() {
-        return new ButtonModel(this.text, this.action);
+        return new ButtonModel(this.text, this.strategy);
     }
 }
 //# sourceMappingURL=ButtonModel.js.map
