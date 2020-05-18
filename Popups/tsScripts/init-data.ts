@@ -19,7 +19,7 @@ function processMessages(data: PopupModel[][]) {
                     var next = chain.find(x => x.Order == chain[i].Order + 1);
                     chain[i].NextPU = next;
                 }
-                (new OpenNextStrategy()).act(index, chain[0], true);
+                (new OpenNextStrategy(new PopupBuilder())).act(index, chain[0], true);
             })
         );
     })();

@@ -12,9 +12,9 @@ class PopupBuilder {
     }
     prepareButtonRegistry() {
         this.buttonsReg = new ButtonRegistry();
-        this.buttonsReg.addButton(new ButtonModel("OK", new OpenNextStrategy()));
-        this.buttonsReg.addButton(new ButtonModel("YES", new ActAndCloseStrategy()));
-        this.buttonsReg.addButton(new ButtonModel("NO", new OpenNextStrategy()));
+        this.buttonsReg.addButton(new ButtonModel("OK", new OpenNextStrategy(this)));
+        this.buttonsReg.addButton(new ButtonModel("YES", new ActAndCloseStrategy(this)));
+        this.buttonsReg.addButton(new ButtonModel("NO", new OpenNextStrategy(this)));
     }
     addButtons(index, model) {
         var btns = [];
@@ -54,12 +54,6 @@ class PopupBuilder {
             title: popup.Message,
             buttons: this.addButtons(index, popup)
         });
-    }
-    openPopup(index) {
-        $('#dialog' + index).dialog("open");
-    }
-    closePopup(index) {
-        $('#dialog' + index).dialog("close");
     }
 }
 //# sourceMappingURL=PopupBuilder.js.map

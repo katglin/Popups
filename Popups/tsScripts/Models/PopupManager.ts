@@ -11,10 +11,14 @@
         this.puBuilder.prepareButtonRegistry();
         this.puBuilder.createPopup(index, popup);
         this.puBuilder.addColor(index, PopupColor[popup.Color]);
-        this.puBuilder.openPopup(index);
+        this.openPopup(index);
+    }
+
+    openPopup(index: number) {
+        $('#dialog' + index).dialog("open");
     }
 
     closePopup(index: number) {
-        this.puBuilder.closePopup(index);
+        $('#dialog' + index).dialog("close");
     }
 }
