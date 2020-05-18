@@ -18,9 +18,9 @@
 
     prepareButtonRegistry() {
         this.buttonsReg = new ButtonRegistry();
-        this.buttonsReg.addButton(new ButtonModel("OK", new OpenNextStrategy(new PopupBuilder())));
-        this.buttonsReg.addButton(new ButtonModel("YES", new ActAndCloseStrategy(new PopupBuilder())));
-        this.buttonsReg.addButton(new ButtonModel("NO", new OpenNextStrategy(new PopupBuilder())));
+        this.buttonsReg.addButton(new ButtonModel("OK", new OpenNextStrategy(this)));
+        this.buttonsReg.addButton(new ButtonModel("YES", new ActAndCloseStrategy(this)));
+        this.buttonsReg.addButton(new ButtonModel("NO", new OpenNextStrategy(this)));
     }
 
     addButtons(index: number, model: PopupModel) {
