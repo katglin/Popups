@@ -8,10 +8,13 @@ class PopupManager {
         this.puBuilder.prepareButtonRegistry();
         this.puBuilder.createPopup(index, popup);
         this.puBuilder.addColor(index, PopupColor[popup.Color]);
-        this.puBuilder.openPopup(index);
+        this.openPopup(index);
+    }
+    openPopup(index) {
+        $('#dialog' + index).dialog("open");
     }
     closePopup(index) {
-        this.puBuilder.closePopup(index);
+        $('#dialog' + index).dialog("close");
     }
 }
 //# sourceMappingURL=PopupManager.js.map

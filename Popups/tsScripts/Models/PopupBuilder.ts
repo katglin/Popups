@@ -18,9 +18,9 @@
 
     prepareButtonRegistry() {
         this.buttonsReg = new ButtonRegistry();
-        this.buttonsReg.addButton(new ButtonModel("OK", new OpenNextStrategy()));
-        this.buttonsReg.addButton(new ButtonModel("YES", new ActAndCloseStrategy()));
-        this.buttonsReg.addButton(new ButtonModel("NO", new OpenNextStrategy()));
+        this.buttonsReg.addButton(new ButtonModel("OK", new OpenNextStrategy(new PopupBuilder())));
+        this.buttonsReg.addButton(new ButtonModel("YES", new ActAndCloseStrategy(new PopupBuilder())));
+        this.buttonsReg.addButton(new ButtonModel("NO", new OpenNextStrategy(new PopupBuilder())));
     }
 
     addButtons(index: number, model: PopupModel) {
@@ -61,13 +61,5 @@
             title: popup.Message,
             buttons: this.addButtons(index, popup)
         });
-    }
-
-    openPopup(index: number) {
-        $('#dialog' + index).dialog("open");
-    }
-
-    closePopup(index: number) {
-        $('#dialog' + index).dialog("close");
     }
 }
